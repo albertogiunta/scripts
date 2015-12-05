@@ -1,0 +1,57 @@
+#! /bin/bash 
+
+# go to post dir
+cd ~/Dropbox/Work/Websites/albertogiunta.github.io/_posts
+
+# create menu
+OPTIONS="NEW MODIFY EXIT"
+select opt in $OPTIONS; do
+	if [ "$opt" = "NEW" ]; then
+		
+		echo "WRITE TITLE HERE"
+		read title
+
+		echo "WRITE CATEGORY HERE"
+		read category
+
+		# store date in variable
+		date=$(date +%Y-%m-%d)
+		
+		# check if a file with the same name already exists, if not, create it
+		if [ ! -f $date-$title.markdown ]; then
+			# create the file
+			touch "$date-$title.markdown"
+		fi
+
+		# store the header in a variable
+		header="---\nlayout: post\ntitle: $title\ndate: $date\ncategory: $category\n---"
+
+		# append the header to the file
+		echo -e $header >> $date-$title.markdown
+
+		# open the file
+		vim $date-$title.markdown
+
+	elif [ "$opt" = "MODIFY" ]; then
+		PS3="Your choice: "
+		QUIT="Exit"
+		select FILENAME in *; do
+			case $FILENAME in "$QUIT")
+				break
+				;;
+			*) 
+				echo "You picked $FILENAME (num. $REPLY)"
+				default=$FILENAME
+				read -p "Enter new name [$default]: " newfilename
+				IP=${newfilename:-$default}
+				echo "The file name now is $newfilename"
+				sed -i -e 
+				;;
+			esac
+		done
+		rm $QUIT
+		
+	elif [ "$opt" = "EXIT" ]; then
+		exit
+	fi
+done

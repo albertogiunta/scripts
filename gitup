@@ -1,0 +1,10 @@
+#! /bin/bash
+
+# add all files to tracking
+git add --all
+
+# commit with message
+git commit -m "${@:1}"
+
+# push changes
+git push
